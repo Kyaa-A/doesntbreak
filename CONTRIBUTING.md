@@ -4,8 +4,9 @@ Thanks for your interest in improving doesntbreak. This is a Claude Agent Skill 
 
 ## What lives where
 
-- `SKILL.md` — the rules Claude loads, plus the `description` that triggers the skill. Keep it tight; this is always in context.
-- `references/patterns.md` — the deep mechanics (annotated CSS, the Tailwind cheat sheet). Claude reads this on demand, so detail belongs here, not in `SKILL.md`.
+- `skills/doesntbreak/SKILL.md` — the rules Claude loads, plus the `description` that triggers the skill. Keep it tight; this is always in context.
+- `skills/doesntbreak/references/patterns.md` — the deep mechanics (annotated CSS, the Tailwind cheat sheet). Claude reads this on demand, so detail belongs here, not in `SKILL.md`.
+- `.claude-plugin/plugin.json` and `.claude-plugin/marketplace.json` — package the skill as an installable plugin and a one-plugin marketplace. Touch these only when changing packaging metadata (name, version, description).
 - `README.md` — the human-facing overview. Keep it in sync when you change the rules.
 
 ## Principles
@@ -19,16 +20,18 @@ Thanks for your interest in improving doesntbreak. This is a Claude Agent Skill 
 
 1. Open an issue describing the breakage the change prevents, ideally with a minimal repro (a CodePen/JSFiddle link or a short HTML snippet).
 2. Fork the repo, branch, and make the change.
-3. If you add or change a rule in `SKILL.md`, update `references/patterns.md` and `README.md` to match.
+3. If you add or change a rule in `skills/doesntbreak/SKILL.md`, update `skills/doesntbreak/references/patterns.md` and `README.md` to match.
 4. Open a PR. Use [Conventional Commits](https://www.conventionalcommits.org/) for the title (e.g. `feat: add container-query stacking pattern`).
 
 ## Testing a change locally
 
 This skill has no build step. To try it:
 
-1. Copy the `doesntbreak/` folder into your Claude skills directory (for Claude Code, `~/.claude/skills/`).
+1. Copy the skill into your Claude skills directory: `cp -r skills/doesntbreak ~/.claude/skills/doesntbreak` (for Claude Code). Or install it as a plugin — see the README.
 2. Ask Claude to build or fix a layout (e.g. "build a pricing page", "this breaks on mobile, fix it").
 3. Confirm the output applies the rules — no fixed widths, fluid containers, and no horizontal scroll at 320 / 375 / 768px.
+
+To validate the plugin and marketplace manifests, run `claude plugin validate .` from the repo root.
 
 ## Scope
 

@@ -1,0 +1,23 @@
+{
+  "name": "doesntbreak",
+  "owner": {
+    "name": "Asnari Pacalna",
+    "email": "asnaripacalna@gmail.com"
+  },
+  "description": "Marketplace for the doesntbreak responsive-UI skill.",
+  "plugins": [
+    {
+      "name": "doesntbreak",
+      "source": "./",
+      "description": "Build web UI that holds up on small screens by default: mobile-first, no horizontal scroll, fluid from 320px up.",
+      "author": {
+        "name": "Asnari Pacalna"
+      },
+      "homepage": "https://github.com/Kyaa-A/doesntbreak",
+      "repository": "https://github.com/Kyaa-A/doesntbreak",
+      "license": "MIT",
+      "keywords": ["responsive-css", "mobile-first", "frontend"],
+      "category": "productivity"
+    }
+  ]
+}

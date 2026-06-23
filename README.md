@@ -36,32 +36,60 @@ The skill bakes responsive discipline into Claude's default output so you don't 
 
 ```
 doesntbreak/
-├── SKILL.md            # the skill instructions Claude loads
-├── README.md           # this file
-├── LICENSE             # MIT
-└── references/
-    └── patterns.md     # detailed CSS mechanics + annotated example
+├── .claude-plugin/
+│   ├── plugin.json       # plugin manifest (name, version, metadata)
+│   └── marketplace.json  # one-plugin marketplace, so it installs from this repo
+├── skills/
+│   └── doesntbreak/
+│       ├── SKILL.md      # the skill instructions Claude loads
+│       └── references/
+│           └── patterns.md  # detailed CSS mechanics + annotated example
+├── README.md             # this file
+├── LICENSE               # MIT
+├── CODE_OF_CONDUCT.md
+├── CONTRIBUTING.md
+├── SECURITY.md
+└── CITATION.cff
 ```
 
-`SKILL.md` carries the rules and triggers. `references/patterns.md` holds the deeper mechanics — the flexbox `min-width: 0` trap, `clamp()` typography, auto-fit grids, container queries, mobile viewport-height units (`dvh`/`svh`/`lvh`), safe-area insets, contained-scroll patterns for wide content (tables, `<pre>`, code), a Tailwind cheat sheet, and a fully annotated example — which Claude reads when it needs the details.
+`skills/doesntbreak/SKILL.md` carries the rules and triggers. `skills/doesntbreak/references/patterns.md` holds the deeper mechanics — the flexbox `min-width: 0` trap, `clamp()` typography, auto-fit grids, container queries, mobile viewport-height units (`dvh`/`svh`/`lvh`), safe-area insets, contained-scroll patterns for wide content (tables, `<pre>`, code), a Tailwind cheat sheet, and a fully annotated example — which Claude reads when it needs the details.
 
 ## Install
 
-Drop the `doesntbreak/` folder into your Claude skills directory:
+Two ways to install, depending on whether you want a managed plugin or a plain skill.
 
-- **Claude Code:** `~/.claude/skills/doesntbreak/`
-- **Plugin:** your plugin's `skills/` directory.
+### As a plugin (from this repo's marketplace)
 
-Claude discovers it automatically via the `description` field in `SKILL.md`. No configuration needed.
+In Claude Code, add the marketplace and install the plugin:
+
+```
+/plugin marketplace add Kyaa-A/doesntbreak
+/plugin install doesntbreak@doesntbreak
+```
+
+You get version tracking and one-command updates. Plugin skills are namespaced by the plugin name, so the command is `/doesntbreak:doesntbreak`.
+
+### As a plain skill (for a bare `/doesntbreak`)
+
+Copy the skill folder into your personal skills directory:
+
+```bash
+git clone https://github.com/Kyaa-A/doesntbreak.git
+cp -r doesntbreak/skills/doesntbreak ~/.claude/skills/doesntbreak
+```
+
+Installed this way the command is simply `/doesntbreak` — skill directories under `~/.claude/skills/` are not namespaced.
+
+Either way, Claude discovers the skill automatically via the `description` field in `SKILL.md`. No configuration needed.
 
 ## Usage
 
-You don't invoke it manually. Just ask Claude to build or fix any web UI and it applies the rules on its own:
+You don't have to invoke it manually. Just ask Claude to build or fix any web UI and it applies the rules on its own:
 
 - "Build a pricing page."
 - "This page breaks on my phone — fix it."
 
-Claude triggers the skill whenever it writes or reviews layout code, even if you never say the word "responsive."
+Claude triggers the skill whenever it writes or reviews layout code, even if you never say the word "responsive." To run it deliberately, type the command from your install method above — `/doesntbreak` for a plain skill, `/doesntbreak:doesntbreak` for the plugin — and you can pass context after it, e.g. `/doesntbreak audit my dashboard layout`.
 
 ## License
 

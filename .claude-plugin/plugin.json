@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
+  "name": "doesntbreak",
+  "description": "Build web UI that holds up on small screens by default: mobile-first, no horizontal scroll, fluid from 320px up.",
+  "version": "0.1.0",
+  "author": {
+    "name": "Asnari Pacalna",
+    "url": "https://github.com/Kyaa-A"
+  },
+  "homepage": "https://github.com/Kyaa-A/doesntbreak",
+  "repository": "https://github.com/Kyaa-A/doesntbreak",
+  "license": "MIT",
+  "keywords": ["responsive-css", "mobile-first", "frontend", "css", "tailwind", "ui"]
+}
