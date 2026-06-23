@@ -26,8 +26,11 @@ The skill bakes responsive discipline into Claude's default output so you don't 
   - Touch targets at least 44x44px.
   - At least 16px font on inputs, so iOS Safari doesn't zoom on focus.
   - Long unbroken strings broken with `overflow-wrap`, not left to overflow.
+  - `dvh`/`svh`/`lvh` for full-height sections, so a `100vh` hero isn't clipped by the mobile address bar.
+  - Wide content (tables, `<pre>`, code blocks) scrolls in its own `overflow-x: auto` container, never the page.
 - **Tests at the real failure points.** 320px, 375px, the awkward 768px tablet middle, long content, and a hard check for no horizontal scroll at any width.
 - **Review mode.** Point it at existing layout code and it scans for the usual offenders — fixed widths, missing `min-width: 0`, desktop-first `max-width` queries, fixed heights, unconstrained images — and fixes them.
+- **Tailwind-aware.** Maps each rule to the right utilities and flags the common footguns — `w-[1200px]`, missing `min-w-0`, `w-screen`, and `min-h-screen` for heroes.
 
 ## File structure
 
@@ -40,7 +43,7 @@ doesntbreak/
     └── patterns.md     # detailed CSS mechanics + annotated example
 ```
 
-`SKILL.md` carries the rules and triggers. `references/patterns.md` holds the deeper mechanics — the flexbox `min-width: 0` trap, `clamp()` typography, auto-fit grids, container queries, safe-area insets, and a fully annotated example — which Claude reads when it needs the details.
+`SKILL.md` carries the rules and triggers. `references/patterns.md` holds the deeper mechanics — the flexbox `min-width: 0` trap, `clamp()` typography, auto-fit grids, container queries, mobile viewport-height units (`dvh`/`svh`/`lvh`), safe-area insets, contained-scroll patterns for wide content (tables, `<pre>`, code), a Tailwind cheat sheet, and a fully annotated example — which Claude reads when it needs the details.
 
 ## Install
 
