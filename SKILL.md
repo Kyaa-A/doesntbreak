@@ -24,18 +24,20 @@ In Tailwind this is the default: unprefixed utilities are mobile, `md:`/`lg:` ad
 5. Touch targets ≥ 44×44px. Small icon buttons need padding to reach 44px.
 6. Min font size 16px on inputs — iOS Safari zooms the page when a focused input is below 16px.
 7. Prevent text overflow. Long unbroken strings force horizontal scroll. Use `overflow-wrap: break-word` (and `min-width: 0` on flex children).
+8. Use `dvh`/`svh` for full-height sections, not `vh`. On mobile `100vh` is the *large* viewport height — taller than the visible area, because the browser's address bar overlaps the bottom. A `100vh` hero clips its content and pushes buttons below the fold. `100dvh` tracks the actual visible height; `100svh` is the stable smallest-visible height. Pair with `min-height`, not `height`.
+9. Wide content scrolls in its own container, not the page. Tables, `<pre>`, and code blocks have intrinsic widths that ignore the viewport — wrap each in an element with `overflow-x: auto` so only that element scrolls. A scrollbar on one wide table is fine; a page-level horizontal scrollbar is a bug.
 
 ## Test at the real failure points
 
-Check the layout at: 320px (smallest phones), 375px/390px (common phones), 768px (the awkward tablet middle), long content (40-char words, 3-line headings, 100-item lists), and horizontal overflow (there should be NO horizontal scroll at any width unless deliberate).
+Check the layout at: 320px (smallest phones), 375px/390px (common phones), 768px (the awkward tablet middle), long content (40-char words, 3-line headings, 100-item lists), full-height sections (the hero must not be clipped by the mobile address bar), and horizontal overflow (there should be NO horizontal scroll at any width unless deliberate).
 
 To hunt overflow: `* { outline: 1px solid red; }` — the element poking past the edge is the culprit. `overflow-x: hidden` only hides the symptom; fix the actual oversized element.
 
 ## When reviewing existing code
 
-Scan for these in order: fixed px `width:` on containers → `min(100%, Npx)`; flex rows without `flex-wrap: wrap`; flex/grid children without `min-width: 0`; desktop-first `max-width` queries → invert to mobile-first; fixed heights → `min-height`; unconstrained images; absolute positioning with px offsets.
+Scan for these in order: fixed px `width:` on containers → `min(100%, Npx)`; flex rows without `flex-wrap: wrap`; flex/grid children without `min-width: 0`; desktop-first `max-width` queries → invert to mobile-first; fixed heights → `min-height`; unconstrained images; absolute positioning with px offsets; `100vh` on full-height sections → `100dvh`/`svh`; wide tables/`<pre>`/code blocks without an `overflow-x: auto` wrapper.
 
-For detailed mechanics — the flexbox `min-width: 0` trap, `clamp()` typography, container queries, safe-area insets, and a full annotated example — read `references/patterns.md`.
+For detailed mechanics — the flexbox `min-width: 0` trap, `clamp()` typography, container queries, mobile viewport-height units (`dvh`/`svh`), safe-area insets, contained-scroll patterns for wide content, a Tailwind cheat sheet, and a full annotated example — read `references/patterns.md`.
 
 ## A note on output
 

@@ -111,7 +111,36 @@ Media queries respond to the viewport. Container queries respond to the size of 
 
 `container-type: inline-size` makes an element a query container measured along the inline axis (width, in horizontal writing modes). Children then query it with `@container`. Drop the same component in a sidebar and a main column and each adapts to the space it's actually given — something a viewport media query can't do.
 
-## 6. Safe-area insets for notched phones
+## 6. Mobile viewport height: dvh, svh, lvh
+
+`100vh` does not mean "the height you can see" on mobile. It equals the *large* viewport — the height with the browser's address bar retracted — so a `min-height: 100vh` hero is taller than the visible area while the bar is showing. The result: the bottom of the section (often the primary button) sits under the address bar, below the fold, until the user scrolls.
+
+```css
+/* Broken: ~60-100px of the hero is hidden behind the mobile browser chrome */
+.hero { min-height: 100vh; }
+
+/* Fixed: dvh tracks the *dynamic* visible height as the bar shows/hides */
+.hero { min-height: 100dvh; }
+```
+
+The three viewport-relative height units:
+
+- `lvh` — **large**: viewport with browser UI retracted. Identical to the classic `100vh`. Tallest.
+- `svh` — **small**: viewport with browser UI expanded (address bar visible). Shortest; always fully visible.
+- `dvh` — **dynamic**: whatever is visible right now. Updates as the bar shows and hides.
+
+Use `dvh` for full-height sections so nothing is clipped. If the reflow as the address bar animates bothers you, use `svh` for a height that's stable and always fully on screen (it just leaves a little extra space when the bar is hidden). Avoid `vh`/`lvh` for content that must be visible. Always pair with `min-height`, not `height`, so the section can still grow with content.
+
+Provide a fallback for older browsers by declaring `vh` first, then overriding:
+
+```css
+.hero {
+  min-height: 100vh;   /* fallback for browsers without dvh */
+  min-height: 100dvh;  /* modern browsers use this */
+}
+```
+
+## 7. Safe-area insets for notched phones
 
 On notched/rounded devices, content can slide under the notch, the home indicator, or rounded corners. First opt in so the page draws edge-to-edge:
 
@@ -133,16 +162,17 @@ On notched/rounded devices, content can slide under the notch, the home indicato
 }
 ```
 
-## 7. Common overflow causes, ranked
+## 8. Common overflow causes, ranked
 
 When there's an unexplained horizontal scrollbar, suspect these in order:
 
 1. **A fixed-width element wider than the viewport** — `width: 1200px` on a container. Cap it: `width: min(100%, 1200px)`.
 2. **A flex/grid child missing `min-width: 0`** — see section 1.
 3. **A long unbroken string** — a URL, hash, or token with no spaces. Add `overflow-wrap: break-word;` (and `min-width: 0` on the flex parent).
-4. **Negative margins** — `margin-left: -2rem` with nothing constraining the right edge.
-5. **`100vw`** — `100vw` includes the scrollbar's width, so `width: 100vw` is a few pixels wider than the visible area whenever a vertical scrollbar is present. Use `width: 100%`.
-6. **Off-canvas absolutely-positioned elements** — a decorative element at `right: -120px` or a drawer parked off-screen without `overflow` clipping its container.
+4. **Wide content with intrinsic width** — tables, `<pre>`, code blocks. Contain the scroll (see section 9).
+5. **Negative margins** — `margin-left: -2rem` with nothing constraining the right edge.
+6. **`100vw`** — `100vw` includes the scrollbar's width, so `width: 100vw` is a few pixels wider than the visible area whenever a vertical scrollbar is present. Use `width: 100%`.
+7. **Off-canvas absolutely-positioned elements** — a decorative element at `right: -120px` or a drawer parked off-screen without `overflow` clipping its container.
 
 To find the culprit fast, outline everything and look for the box poking past the edge:
 
@@ -152,7 +182,43 @@ To find the culprit fast, outline everything and look for the box poking past th
 
 Use `outline`, not `border` — outline doesn't affect layout, so it won't shift anything while you debug. Note that `overflow-x: hidden` only hides the symptom; it leaves the oversized element in place and can clip legitimate content. Find and fix the actual element instead.
 
-## 8. Stacking patterns
+## 9. Wide content: tables, `<pre>`, and code blocks
+
+Tables, `<pre>`, and code blocks have an intrinsic minimum width set by their content, and they ignore the viewport. They are the most common overflow source after fixed widths — and the one case where horizontal scroll is *correct*, as long as it is contained to the element instead of leaking to the page.
+
+**Tables** — wrap the table; scroll the wrapper, not the table itself:
+
+```html
+<div class="table-scroll">
+  <table> ... </table>
+</div>
+```
+
+```css
+.table-scroll {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch; /* momentum scrolling on iOS */
+}
+```
+
+**`<pre>` and code blocks** — let long lines scroll inside the block; break inline code instead of scrolling:
+
+```css
+pre {
+  max-width: 100%;
+  overflow-x: auto;       /* long lines scroll within the block, not the page */
+}
+
+code {
+  overflow-wrap: break-word;  /* inline code breaks rather than overflowing */
+}
+```
+
+If a `<pre>` or table sits inside a flex row, also give the flex child `min-width: 0` (section 1), or it will refuse to shrink and the wrapper's `overflow-x` will never kick in.
+
+The rule of thumb: **contain the scroll.** A page-level horizontal scrollbar is a bug; a scrollbar on a single wide table is a feature.
+
+## 10. Stacking patterns
 
 Mobile-first: stack by default, go horizontal when there's room.
 
@@ -186,9 +252,9 @@ A sidebar + main layout follows the same shape — one column on phones, two col
 }
 ```
 
-## 9. Annotated full example
+## 11. Annotated full example
 
-A complete responsive card section applying the rules together. Comments point to the rule each line satisfies (rule numbers refer to the non-negotiables in `SKILL.md`).
+A complete responsive card section applying the rules together. Comments point to the rule each line satisfies (rule numbers refer to the non-negotiables in `SKILL.md`; section numbers refer to this document).
 
 ```html
 <section class="features">
@@ -263,3 +329,29 @@ input, select, textarea { font-size: 16px; }
 ```
 
 Stacks to one column on phones, fans out to as many 280px+ columns as fit, fluid type and spacing throughout, media capped at 100%, no horizontal scroll at any width from 320px up.
+
+## 12. Tailwind cheat sheet
+
+Tailwind is mobile-first by default: an unprefixed utility applies at every size, and `sm: md: lg: xl: 2xl:` add styles upward from a `min-width` breakpoint. Never use a prefix to "undo" a base style on small screens — write the small-screen value unprefixed and layer up. Write `class="flex-col md:flex-row"` (stack first, row on desktop), never `class="flex-row md:flex-col"`.
+
+Each rule mapped to its utilities, and the footgun to avoid:
+
+| Rule | Use | Footgun to avoid |
+| --- | --- | --- |
+| 1. No fixed widths | `w-full max-w-5xl mx-auto`, or `max-w-[1200px] w-full` | `w-[1200px]` (fixed, overflows the phone) |
+| 2. Reflow | `flex flex-wrap`; `grid grid-cols-[repeat(auto-fit,minmax(280px,1fr))]` | `flex` without `flex-wrap`; hardcoding `grid-cols-4` at every size |
+| 3. min-height | `min-h-dvh`, `min-h-[12rem]` | `h-screen`, `h-[600px]` (clips content) |
+| 4. Constrain media | `max-w-full h-auto` (or Next.js `<Image>`) | unbounded `<img>` |
+| 5. Tap targets | `min-h-11 min-w-11 p-3` (`h-11` = 44px) | `p-1` icon buttons |
+| 6. Input font | `text-base` (16px) on inputs | `text-sm` inputs trigger iOS zoom |
+| 7. Text overflow | `min-w-0 break-words`; `truncate` for single line | flex child without `min-w-0` |
+| 8. Viewport height | `min-h-dvh` / `min-h-svh` | `min-h-screen` (= 100vh) for heroes |
+| 9. Wide content | wrap in `overflow-x-auto` | `overflow-x-hidden` on `body` to mask it |
+
+Footguns worth calling out:
+
+- **`min-w-0` is the fix for 90% of Tailwind flex overflow.** Flex defaults to `flex-nowrap` with `min-width: auto` children, so long text or a nested flex row overflows. Add `flex-wrap` and `min-w-0` (and `truncate` or `break-words` on the text node).
+- **`w-screen` is `100vw`**, which includes the scrollbar width and causes a sliver of horizontal scroll. Use `w-full`.
+- **`min-h-screen` is still `100vh`** in Tailwind. For mobile heroes use `min-h-dvh` (`min-h-dvh`/`min-h-svh` need Tailwind v3.4+; on older versions use the arbitrary value `min-h-[100dvh]`).
+- **Arbitrary fixed values** like `w-[1200px]` and `h-[600px]` reintroduce every problem this skill prevents. Prefer `max-w-*` + `w-full` and `min-h-*`.
+- **shadcn/ui:** components are responsive-friendly, but `DialogContent` and data tables still need `max-w-[...] w-full` and an `overflow-x-auto` wrapper for wide content, respectively.
