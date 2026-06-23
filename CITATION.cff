@@ -1,0 +1,19 @@
+cff-version: 1.2.0
+message: "If you use doesntbreak, please cite it using this metadata."
+title: doesntbreak
+abstract: "A Claude Agent Skill that makes Claude write mobile-first web UI that holds up on small screens by default, from 320px up."
+type: software
+authors:
+  - family-names: Pacalna
+    given-names: Asnari
+    alias: Kyaa-A
+repository-code: "https://github.com/Kyaa-A/doesntbreak"
+url: "https://github.com/Kyaa-A/doesntbreak"
+license: MIT
+keywords:
+  - claude
+  - claude-code
+  - skill
+  - responsive-css
+  - mobile-first
+  - frontend
