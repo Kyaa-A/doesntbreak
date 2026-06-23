@@ -1,13 +1,13 @@
 # Contributing to doesntbreak
 
-Thanks for your interest in improving doesntbreak. This is a Claude Agent Skill — a small set of Markdown files that teach Claude to write mobile-first web UI by default. Contributions are mostly content: clearer rules, better examples, and new responsive patterns that prevent real-world breakage.
+Thanks for your interest in improving doesntbreak. This is a Claude Agent Skill: a small set of Markdown files that teach Claude to write mobile-first web UI by default. Contributions are mostly content: clearer rules, better examples, and new responsive patterns that prevent real-world breakage.
 
 ## What lives where
 
-- `skills/doesntbreak/SKILL.md` — the rules Claude loads, plus the `description` that triggers the skill. Keep it tight; this is always in context.
-- `skills/doesntbreak/references/patterns.md` — the deep mechanics (annotated CSS, the Tailwind cheat sheet). Claude reads this on demand, so detail belongs here, not in `SKILL.md`.
-- `.claude-plugin/plugin.json` and `.claude-plugin/marketplace.json` — package the skill as an installable plugin and a one-plugin marketplace. Touch these only when changing packaging metadata (name, version, description).
-- `README.md` — the human-facing overview. Keep it in sync when you change the rules.
+- `skills/doesntbreak/SKILL.md`: the rules Claude loads, plus the `description` that triggers the skill. Keep it tight; this is always in context.
+- `skills/doesntbreak/references/patterns.md`: the deep mechanics (annotated CSS, the Tailwind cheat sheet). Claude reads this on demand, so detail belongs here, not in `SKILL.md`.
+- `.claude-plugin/plugin.json` and `.claude-plugin/marketplace.json`: package the skill as an installable plugin and a one-plugin marketplace. Touch these only when changing packaging metadata (name, version, description).
+- `README.md`: the human-facing overview. Keep it in sync when you change the rules.
 
 ## Principles
 
@@ -27,9 +27,9 @@ Thanks for your interest in improving doesntbreak. This is a Claude Agent Skill 
 
 This skill has no build step. To try it:
 
-1. Copy the skill into your Claude skills directory: `cp -r skills/doesntbreak ~/.claude/skills/doesntbreak` (for Claude Code). Or install it as a plugin — see the README.
+1. Copy the skill into your Claude skills directory: `cp -r skills/doesntbreak ~/.claude/skills/doesntbreak` (for Claude Code). Or install it as a plugin. See the README.
 2. Ask Claude to build or fix a layout (e.g. "build a pricing page", "this breaks on mobile, fix it").
-3. Confirm the output applies the rules — no fixed widths, fluid containers, and no horizontal scroll at 320 / 375 / 768px.
+3. Confirm the output applies the rules: no fixed widths, fluid containers, and no horizontal scroll at 320 / 375 / 768px.
 
 To validate the plugin and marketplace manifests, run `claude plugin validate .` from the repo root.
 

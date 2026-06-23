@@ -4,7 +4,7 @@ The mechanics behind the `doesntbreak` rules. Every snippet is mobile-first and 
 
 ## 1. The flexbox `min-width: 0` trap
 
-Flex items have `min-width: auto` by default, which means a flex item refuses to shrink below the intrinsic size of its content. A long URL, a `<pre>` block, a long word, or a nested flex row will push the item — and the whole row — wider than the viewport, producing horizontal scroll.
+Flex items have `min-width: auto` by default, which means a flex item refuses to shrink below the intrinsic size of its content. A long URL, a `<pre>` block, a long word, or a nested flex row will push the item (and the whole row) wider than the viewport, producing horizontal scroll.
 
 ```css
 /* Broken: .body won't shrink below its content, so a long string overflows */
@@ -21,7 +21,7 @@ Flex items have `min-width: auto` by default, which means a flex item refuses to
 }
 ```
 
-This is the single most common "I have no idea where this scrollbar comes from" cause once a layout uses flex. The same trap applies to grid items, where the default minimum also resolves to the content size — use `minmax(0, 1fr)` instead of `1fr`:
+This is the single most common "I have no idea where this scrollbar comes from" cause once a layout uses flex. The same trap applies to grid items, where the default minimum also resolves to the content size. Use `minmax(0, 1fr)` instead of `1fr`:
 
 ```css
 /* Broken: 1fr tracks won't shrink below content */
@@ -39,11 +39,11 @@ This is the single most common "I have no idea where this scrollbar comes from" 
 h1 { font-size: clamp(1.75rem, 5vw + 1rem, 3.5rem); }
 ```
 
-- `1.75rem` — the floor. The heading never gets smaller than this on tiny screens.
-- `5vw + 1rem` — the preferred, viewport-relative value that grows as the screen widens.
-- `3.5rem` — the ceiling. The heading stops growing on large screens so it doesn't get absurd.
+- `1.75rem`: the floor. The heading never gets smaller than this on tiny screens.
+- `5vw + 1rem`: the preferred, viewport-relative value that grows as the screen widens.
+- `3.5rem`: the ceiling. The heading stops growing on large screens so it doesn't get absurd.
 
-Use `vw + rem`, not pure `vw`, for the preferred value. A purely viewport-based font size ignores the user's root font-size preference and undermines browser zoom — bad for accessibility. The `rem` term ties part of the value to the root font size, so when a user bumps their default font size or zooms, the text still responds.
+Use `vw + rem`, not pure `vw`, for the preferred value. A purely viewport-based font size ignores the user's root font-size preference and undermines browser zoom: bad for accessibility. The `rem` term ties part of the value to the root font size, so when a user bumps their default font size or zooms, the text still responds.
 
 ## 3. Fluid spacing and the fluid container
 
@@ -62,7 +62,7 @@ For the page-width wrapper, use a single `min()` rule:
 }
 ```
 
-`min()` picks the smaller of "the viewport minus a 1rem gutter on each side" and "1200px". On phones you get full width minus comfortable gutters; on desktop you get a centered 1200px column. This is cleaner than `max-width: 1200px; padding-inline: 1rem` because the gutter is baked into the width — the element can never exceed the viewport, and you don't have to reason about `box-sizing` interactions between width and padding.
+`min()` picks the smaller of "the viewport minus a 1rem gutter on each side" and "1200px". On phones you get full width minus comfortable gutters; on desktop you get a centered 1200px column. This is cleaner than `max-width: 1200px; padding-inline: 1rem` because the gutter is baked into the width. The element can never exceed the viewport, and you don't have to reason about `box-sizing` interactions between width and padding.
 
 ## 4. Auto-responsive grids without media queries
 
@@ -76,7 +76,7 @@ Let the grid decide how many columns fit instead of writing breakpoints:
 }
 ```
 
-Each track is at least `280px` and at most `1fr`. The grid packs as many `280px+` columns as fit, then stretches them to share the row. One column on a phone, four on a desktop — automatically.
+Each track is at least `280px` and at most `1fr`. The grid packs as many `280px+` columns as fit, then stretches them to share the row. One column on a phone, four on a desktop, automatically.
 
 **auto-fit vs auto-fill:** `auto-fit` collapses empty tracks to zero width, so the items present stretch to fill the row. `auto-fill` keeps empty phantom tracks, so a single item stays its minimum width with empty space beside it. For card grids you almost always want `auto-fit`.
 
@@ -88,11 +88,11 @@ Each track is at least `280px` and at most `1fr`. The grid packs as many `280px+
 }
 ```
 
-`min(100%, 280px)` is `280px` normally, but drops to `100%` when the container is smaller — no overflow.
+`min(100%, 280px)` is `280px` normally, but drops to `100%` when the container is smaller: no overflow.
 
 ## 5. Container queries
 
-Media queries respond to the viewport. Container queries respond to the size of an element's own container, which is what you actually want for reusable components — the same card should lay out differently in a narrow sidebar than at full width, regardless of the viewport.
+Media queries respond to the viewport. Container queries respond to the size of an element's own container, which is what you actually want for reusable components. The same card should lay out differently in a narrow sidebar than at full width, regardless of the viewport.
 
 ```css
 .card-wrap {
@@ -109,11 +109,11 @@ Media queries respond to the viewport. Container queries respond to the size of 
 }
 ```
 
-`container-type: inline-size` makes an element a query container measured along the inline axis (width, in horizontal writing modes). Children then query it with `@container`. Drop the same component in a sidebar and a main column and each adapts to the space it's actually given — something a viewport media query can't do.
+`container-type: inline-size` makes an element a query container measured along the inline axis (width, in horizontal writing modes). Children then query it with `@container`. Drop the same component in a sidebar and a main column and each adapts to the space it's actually given, something a viewport media query can't do.
 
 ## 6. Mobile viewport height: dvh, svh, lvh
 
-`100vh` does not mean "the height you can see" on mobile. It equals the *large* viewport — the height with the browser's address bar retracted — so a `min-height: 100vh` hero is taller than the visible area while the bar is showing. The result: the bottom of the section (often the primary button) sits under the address bar, below the fold, until the user scrolls.
+`100vh` does not mean "the height you can see" on mobile. It equals the *large* viewport (the height with the browser's address bar retracted) so a `min-height: 100vh` hero is taller than the visible area while the bar is showing. The result: the bottom of the section (often the primary button) sits under the address bar, below the fold, until the user scrolls.
 
 ```css
 /* Broken: ~60-100px of the hero is hidden behind the mobile browser chrome */
@@ -125,9 +125,9 @@ Media queries respond to the viewport. Container queries respond to the size of 
 
 The three viewport-relative height units:
 
-- `lvh` — **large**: viewport with browser UI retracted. Identical to the classic `100vh`. Tallest.
-- `svh` — **small**: viewport with browser UI expanded (address bar visible). Shortest; always fully visible.
-- `dvh` — **dynamic**: whatever is visible right now. Updates as the bar shows and hides.
+- `lvh`: **large**: viewport with browser UI retracted. Identical to the classic `100vh`. Tallest.
+- `svh`: **small**: viewport with browser UI expanded (address bar visible). Shortest; always fully visible.
+- `dvh`: **dynamic**: whatever is visible right now. Updates as the bar shows and hides.
 
 Use `dvh` for full-height sections so nothing is clipped. If the reflow as the address bar animates bothers you, use `svh` for a height that's stable and always fully on screen (it just leaves a little extra space when the bar is hidden). Avoid `vh`/`lvh` for content that must be visible. Always pair with `min-height`, not `height`, so the section can still grow with content.
 
@@ -148,7 +148,7 @@ On notched/rounded devices, content can slide under the notch, the home indicato
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 ```
 
-`viewport-fit=cover` is required — without it the `env()` insets below resolve to `0`. Then pad by the inset, using `max()` so you keep a sensible minimum on devices with no notch (where the inset is `0`):
+`viewport-fit=cover` is required. Without it the `env()` insets below resolve to `0`. Then pad by the inset, using `max()` so you keep a sensible minimum on devices with no notch (where the inset is `0`):
 
 ```css
 .app-bar {
@@ -166,13 +166,13 @@ On notched/rounded devices, content can slide under the notch, the home indicato
 
 When there's an unexplained horizontal scrollbar, suspect these in order:
 
-1. **A fixed-width element wider than the viewport** — `width: 1200px` on a container. Cap it: `width: min(100%, 1200px)`.
-2. **A flex/grid child missing `min-width: 0`** — see section 1.
-3. **A long unbroken string** — a URL, hash, or token with no spaces. Add `overflow-wrap: break-word;` (and `min-width: 0` on the flex parent).
-4. **Wide content with intrinsic width** — tables, `<pre>`, code blocks. Contain the scroll (see section 9).
-5. **Negative margins** — `margin-left: -2rem` with nothing constraining the right edge.
-6. **`100vw`** — `100vw` includes the scrollbar's width, so `width: 100vw` is a few pixels wider than the visible area whenever a vertical scrollbar is present. Use `width: 100%`.
-7. **Off-canvas absolutely-positioned elements** — a decorative element at `right: -120px` or a drawer parked off-screen without `overflow` clipping its container.
+1. **A fixed-width element wider than the viewport**: `width: 1200px` on a container. Cap it: `width: min(100%, 1200px)`.
+2. **A flex/grid child missing `min-width: 0`**: see section 1.
+3. **A long unbroken string**: a URL, hash, or token with no spaces. Add `overflow-wrap: break-word;` (and `min-width: 0` on the flex parent).
+4. **Wide content with intrinsic width**: tables, `<pre>`, code blocks. Contain the scroll (see section 9).
+5. **Negative margins**: `margin-left: -2rem` with nothing constraining the right edge.
+6. **`100vw`**: `100vw` includes the scrollbar's width, so `width: 100vw` is a few pixels wider than the visible area whenever a vertical scrollbar is present. Use `width: 100%`.
+7. **Off-canvas absolutely-positioned elements**: a decorative element at `right: -120px` or a drawer parked off-screen without `overflow` clipping its container.
 
 To find the culprit fast, outline everything and look for the box poking past the edge:
 
@@ -180,13 +180,13 @@ To find the culprit fast, outline everything and look for the box poking past th
 * { outline: 1px solid red; }
 ```
 
-Use `outline`, not `border` — outline doesn't affect layout, so it won't shift anything while you debug. Note that `overflow-x: hidden` only hides the symptom; it leaves the oversized element in place and can clip legitimate content. Find and fix the actual element instead.
+Use `outline`, not `border`. Outline doesn't affect layout, so it won't shift anything while you debug. Note that `overflow-x: hidden` only hides the symptom; it leaves the oversized element in place and can clip legitimate content. Find and fix the actual element instead.
 
 ## 9. Wide content: tables, `<pre>`, and code blocks
 
-Tables, `<pre>`, and code blocks have an intrinsic minimum width set by their content, and they ignore the viewport. They are the most common overflow source after fixed widths — and the one case where horizontal scroll is *correct*, as long as it is contained to the element instead of leaking to the page.
+Tables, `<pre>`, and code blocks have an intrinsic minimum width set by their content, and they ignore the viewport. They are the most common overflow source after fixed widths, and the one case where horizontal scroll is *correct*, as long as it is contained to the element instead of leaking to the page.
 
-**Tables** — wrap the table; scroll the wrapper, not the table itself:
+**Tables**: wrap the table; scroll the wrapper, not the table itself:
 
 ```html
 <div class="table-scroll">
@@ -201,7 +201,7 @@ Tables, `<pre>`, and code blocks have an intrinsic minimum width set by their co
 }
 ```
 
-**`<pre>` and code blocks** — let long lines scroll inside the block; break inline code instead of scrolling:
+**`<pre>` and code blocks**: let long lines scroll inside the block; break inline code instead of scrolling:
 
 ```css
 pre {
@@ -236,7 +236,7 @@ Mobile-first: stack by default, go horizontal when there's room.
 }
 ```
 
-A sidebar + main layout follows the same shape — one column on phones, two columns once there's width:
+A sidebar + main layout follows the same shape: one column on phones, two columns once there's width:
 
 ```css
 .layout {
@@ -332,7 +332,7 @@ Stacks to one column on phones, fans out to as many 280px+ columns as fit, fluid
 
 ## 12. Tailwind cheat sheet
 
-Tailwind is mobile-first by default: an unprefixed utility applies at every size, and `sm: md: lg: xl: 2xl:` add styles upward from a `min-width` breakpoint. Never use a prefix to "undo" a base style on small screens — write the small-screen value unprefixed and layer up. Write `class="flex-col md:flex-row"` (stack first, row on desktop), never `class="flex-row md:flex-col"`.
+Tailwind is mobile-first by default: an unprefixed utility applies at every size, and `sm: md: lg: xl: 2xl:` add styles upward from a `min-width` breakpoint. Never use a prefix to "undo" a base style on small screens. Write the small-screen value unprefixed and layer up. Write `class="flex-col md:flex-row"` (stack first, row on desktop), never `class="flex-row md:flex-col"`.
 
 Each rule mapped to its utilities, and the footgun to avoid:
 

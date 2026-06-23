@@ -1,6 +1,6 @@
 # Security Policy
 
-doesntbreak is a documentation-only Claude Agent Skill: it ships Markdown files (`SKILL.md`, `references/patterns.md`) with no executable code, no build step, and no runtime. The practical security surface is small — but skill content becomes instructions an AI agent will follow, so a few things are worth taking seriously.
+doesntbreak is a documentation-only Claude Agent Skill: it ships Markdown files (`SKILL.md`, `references/patterns.md`) with no executable code, no build step, and no runtime. The practical security surface is small. But skill content becomes instructions an AI agent will follow, so a few things are worth taking seriously.
 
 ## Reporting a vulnerability
 
@@ -19,7 +19,7 @@ Expect an initial response within a few days. Please allow a reasonable window t
 
 ## Out of scope
 
-- Vulnerabilities in Claude, Claude Code, or any host application that loads this skill — report those to their respective vendors.
+- Vulnerabilities in Claude, Claude Code, or any host application that loads this skill: report those to their respective vendors.
 - General responsive-design disagreements; those are regular issues or PRs.
 
 ## Supported versions

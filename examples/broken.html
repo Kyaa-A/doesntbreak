@@ -3,16 +3,16 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>doesntbreak — broken demo</title>
+  <title>doesntbreak: broken demo</title>
   <style>
     /* Each rule below is intentionally WRONG. See examples/fixed.html for the fix. */
 
     body { margin: 0; font-family: system-ui, sans-serif; }
 
-    /* Rule 1 — fixed width: overflows any viewport narrower than 1200px */
+    /* Rule 1, fixed width: overflows any viewport narrower than 1200px */
     .container { width: 1200px; margin: 0 auto; padding: 1rem; }
 
-    /* Rule 8 + Rule 3 — 100vh + fixed height: CTA hides under the mobile address bar */
+    /* Rule 8 + Rule 3, 100vh + fixed height: CTA hides under the mobile address bar */
     .hero {
       height: 100vh;
       display: flex;
@@ -22,16 +22,16 @@
       padding: 1rem;
     }
 
-    /* Rule 2 — flex row without flex-wrap: cards refuse to reflow */
+    /* Rule 2, flex row without flex-wrap: cards refuse to reflow */
     .row { display: flex; gap: 1rem; }
 
-    /* Rule 7 — flex child with no min-width: 0: a long string blows out the row */
+    /* Rule 7, flex child with no min-width: 0: a long string blows out the row */
     .card { flex: 1; padding: 1rem; background: #fff; border: 1px solid #ddd; }
 
-    /* Rule 5 — sub-44px tap target */
+    /* Rule 5: sub-44px tap target */
     .icon-btn { padding: 2px; font-size: 12px; }
 
-    /* Rule 6 — input under 16px: iOS Safari zooms on focus */
+    /* Rule 6, input under 16px: iOS Safari zooms on focus */
     .field { font-size: 13px; padding: 0.4rem; }
   </style>
 </head>
@@ -43,7 +43,7 @@
   </section>
 
   <div class="container">
-    <!-- Rule 4 — unconstrained media: a wide image with no max-width overflows -->
+    <!-- Rule 4, unconstrained media: a wide image with no max-width overflows -->
     <img src="https://placehold.co/2000x600" alt="Banner" width="2000">
 
     <section id="features" class="row">
@@ -64,7 +64,7 @@
       </article>
     </section>
 
-    <!-- Rule 9 — wide table with no scroll wrapper: the whole page scrolls sideways -->
+    <!-- Rule 9, wide table with no scroll wrapper: the whole page scrolls sideways -->
     <table border="1">
       <thead>
         <tr>
@@ -75,7 +75,7 @@
       <tbody>
         <tr>
           <td>North</td><td>120</td><td>140</td><td>160</td><td>180</td>
-          <td>600</td><td>+0</td><td>Alice</td><td>On track</td><td>—</td>
+          <td>600</td><td>+0</td><td>Alice</td><td>On track</td><td>n/a</td>
         </tr>
       </tbody>
     </table>

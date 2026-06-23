@@ -1,6 +1,6 @@
 # doesntbreak
 
-A Claude Agent Skill that makes Claude write web UI which holds up on small screens by default — mobile-first, no horizontal scroll, fluid layouts — working from 320px up, without you ever having to ask for "responsive."
+A Claude Agent Skill that makes Claude write web UI which holds up on small screens by default (mobile-first, no horizontal scroll, fluid layouts) working from 320px up, without you ever having to ask for "responsive."
 
 ## The problem
 
@@ -17,9 +17,9 @@ The cause is almost always desktop-first habits: fixed pixel widths, hand-writte
 
 The skill bakes responsive discipline into Claude's default output so you don't have to remember to ask for it.
 
-- **Mobile-first by default.** Base styles target the smallest screen; complexity is layered upward with `min-width` queries — never the reverse.
+- **Mobile-first by default.** Base styles target the smallest screen; complexity is layered upward with `min-width` queries. Never the reverse.
 - **Non-negotiables, applied automatically:**
-  - No fixed pixel widths on layout containers — cap with `min(100%, Npx)`.
+  - No fixed pixel widths on layout containers: cap with `min(100%, Npx)`.
   - Let flex and grid reflow (`flex-wrap`, `auto-fit` grids) instead of hand-written breakpoints.
   - `min-height`, not fixed `height`, so containers grow with content.
   - Media capped with `max-width: 100%`.
@@ -29,8 +29,8 @@ The skill bakes responsive discipline into Claude's default output so you don't 
   - `dvh`/`svh`/`lvh` for full-height sections, so a `100vh` hero isn't clipped by the mobile address bar.
   - Wide content (tables, `<pre>`, code blocks) scrolls in its own `overflow-x: auto` container, never the page.
 - **Tests at the real failure points.** 320px, 375px, the awkward 768px tablet middle, long content, and a hard check for no horizontal scroll at any width.
-- **Review mode.** Point it at existing layout code and it scans for the usual offenders — fixed widths, missing `min-width: 0`, desktop-first `max-width` queries, fixed heights, unconstrained images — and fixes them.
-- **Tailwind-aware.** Maps each rule to the right utilities and flags the common footguns — `w-[1200px]`, missing `min-w-0`, `w-screen`, and `min-h-screen` for heroes.
+- **Review mode.** Point it at existing layout code and it scans for the usual offenders (fixed widths, missing `min-width: 0`, desktop-first `max-width` queries, fixed heights, unconstrained images) and fixes them.
+- **Tailwind-aware.** Maps each rule to the right utilities and flags the common footguns: `w-[1200px]`, missing `min-w-0`, `w-screen`, and `min-h-screen` for heroes.
 
 ## File structure
 
@@ -55,7 +55,7 @@ doesntbreak/
 └── CITATION.cff
 ```
 
-`skills/doesntbreak/SKILL.md` carries the rules and triggers. `skills/doesntbreak/references/patterns.md` holds the deeper mechanics — the flexbox `min-width: 0` trap, `clamp()` typography, auto-fit grids, container queries, mobile viewport-height units (`dvh`/`svh`/`lvh`), safe-area insets, contained-scroll patterns for wide content (tables, `<pre>`, code), a Tailwind cheat sheet, and a fully annotated example — which Claude reads when it needs the details.
+`skills/doesntbreak/SKILL.md` carries the rules and triggers. `skills/doesntbreak/references/patterns.md` holds the deeper mechanics (the flexbox `min-width: 0` trap, `clamp()` typography, auto-fit grids, container queries, mobile viewport-height units (`dvh`/`svh`/`lvh`), safe-area insets, contained-scroll patterns for wide content (tables, `<pre>`, code), a Tailwind cheat sheet, and a fully annotated example), which Claude reads when it needs the details.
 
 ## Install
 
@@ -81,7 +81,7 @@ git clone https://github.com/Kyaa-A/doesntbreak.git
 cp -r doesntbreak/skills/doesntbreak ~/.claude/skills/doesntbreak
 ```
 
-Installed this way the command is simply `/doesntbreak` — skill directories under `~/.claude/skills/` are not namespaced.
+Installed this way the command is simply `/doesntbreak`. Skill directories under `~/.claude/skills/` are not namespaced.
 
 Either way, Claude discovers the skill automatically via the `description` field in `SKILL.md`. No configuration needed.
 
@@ -90,16 +90,16 @@ Either way, Claude discovers the skill automatically via the `description` field
 You don't have to invoke it manually. Just ask Claude to build or fix any web UI and it applies the rules on its own:
 
 - "Build a pricing page."
-- "This page breaks on my phone — fix it."
+- "This page breaks on my phone. Fix it."
 
-Claude triggers the skill whenever it writes or reviews layout code, even if you never say the word "responsive." To run it deliberately, type the command from your install method above — `/doesntbreak` for a plain skill, `/doesntbreak:doesntbreak` for the plugin — and you can pass context after it, e.g. `/doesntbreak audit my dashboard layout`.
+Claude triggers the skill whenever it writes or reviews layout code, even if you never say the word "responsive." To run it deliberately, type the command from your install method above (`/doesntbreak` for a plain skill, `/doesntbreak:doesntbreak` for the plugin) and you can pass context after it, e.g. `/doesntbreak audit my dashboard layout`.
 
 ## Examples
 
 `examples/` holds a deliberately broken page and its corrected twin, so you can
 watch the audit fire and compare before/after.
 
-Audit the broken page — expect Critical findings (fixed 1200px width, `100vh`
+Audit the broken page: expect Critical findings (fixed 1200px width, `100vh`
 hero, unwrapped flex row, uncontained wide table, sub-44px tap target), plus the
 unconstrained image and sub-16px input:
 
@@ -107,7 +107,7 @@ unconstrained image and sub-16px input:
 /doesntbreak:audit examples/broken.html
 ```
 
-Audit the corrected page — expect a clean sweep:
+Audit the corrected page: expect a clean sweep:
 
 ```
 /doesntbreak:audit examples/fixed.html
