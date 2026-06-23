@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>doesntbreak — fixed demo</title>
+  <style>
+    /* Same content as broken.html, each rule corrected per patterns.md. */
+
+    *, *::before, *::after { box-sizing: border-box; }
+    body { margin: 0; font-family: system-ui, sans-serif; }
+
+    /* Rule 4 — media never exceeds its container */
+    img, video, svg { max-width: 100%; height: auto; display: block; }
+
+    /* Rule 1 — fluid container: full width minus gutters, capped at 1200px */
+    .container { width: min(100% - 2rem, 1200px); margin-inline: auto; padding: 1rem; }
+
+    /* Rule 8 + Rule 3 — dvh with vh fallback, min-height so it grows with content */
+    .hero {
+      min-height: 100vh;
+      min-height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      background: #f0f4ff;
+      padding: 1rem;
+    }
+
+    /* Rule 2 — flex row that wraps when there isn't room for a row */
+    .row { display: flex; flex-wrap: wrap; gap: 1rem; }
+
+    /* Rule 7 — min-width: 0 lets the child shrink; break-word breaks the long URL */
+    .card {
+      flex: 1 1 280px;
+      min-width: 0;
+      overflow-wrap: break-word;
+      padding: 1rem;
+      background: #fff;
+      border: 1px solid #ddd;
+    }
+
+    /* Rule 5 — 44px tap target */
+    .icon-btn {
+      min-width: 44px;
+      min-height: 44px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Rule 9 — contained scroll: the wrapper scrolls, not the page */
+    .table-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+
+    /* Rule 6 — 16px input so iOS Safari doesn't zoom on focus */
+    .field { font-size: 16px; padding: 0.4rem; }
+  </style>
+</head>
+<body>
+  <section class="hero">
+    <h1>doesntbreak</h1>
+    <p>Layouts that survive a phone.</p>
+    <a class="cta" href="#features">Get started</a>
+  </section>
+
+  <div class="container">
+    <img src="https://placehold.co/2000x600" alt="Banner" width="2000">
+
+    <section id="features" class="row">
+      <article class="card">
+        <h3>Fast</h3>
+        <p>Drop it in and go. Docs: https://example.com/a-very-long-unbroken-url-that-overflows-the-row-on-mobile</p>
+        <button class="icon-btn">★</button>
+      </article>
+      <article class="card">
+        <h3>Fluid</h3>
+        <p>No breakpoints to babysit.</p>
+        <button class="icon-btn">★</button>
+      </article>
+      <article class="card">
+        <h3>Safe</h3>
+        <p>No surprise horizontal scroll.</p>
+        <button class="icon-btn">★</button>
+      </article>
+    </section>
+
+    <div class="table-scroll">
+      <table border="1">
+        <thead>
+          <tr>
+            <th>Region</th><th>Q1</th><th>Q2</th><th>Q3</th><th>Q4</th>
+            <th>Target</th><th>Variance</th><th>Owner</th><th>Status</th><th>Notes</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>North</td><td>120</td><td>140</td><td>160</td><td>180</td>
+            <td>600</td><td>+0</td><td>Alice</td><td>On track</td><td>—</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <form>
+      <input class="field" type="email" placeholder="you@example.com">
+    </form>
+  </div>
+</body>
+</html>

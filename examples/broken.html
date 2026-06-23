@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>doesntbreak — broken demo</title>
+  <style>
+    /* Each rule below is intentionally WRONG. See examples/fixed.html for the fix. */
+
+    body { margin: 0; font-family: system-ui, sans-serif; }
+
+    /* Rule 1 — fixed width: overflows any viewport narrower than 1200px */
+    .container { width: 1200px; margin: 0 auto; padding: 1rem; }
+
+    /* Rule 8 + Rule 3 — 100vh + fixed height: CTA hides under the mobile address bar */
+    .hero {
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      background: #f0f4ff;
+      padding: 1rem;
+    }
+
+    /* Rule 2 — flex row without flex-wrap: cards refuse to reflow */
+    .row { display: flex; gap: 1rem; }
+
+    /* Rule 7 — flex child with no min-width: 0: a long string blows out the row */
+    .card { flex: 1; padding: 1rem; background: #fff; border: 1px solid #ddd; }
+
+    /* Rule 5 — sub-44px tap target */
+    .icon-btn { padding: 2px; font-size: 12px; }
+
+    /* Rule 6 — input under 16px: iOS Safari zooms on focus */
+    .field { font-size: 13px; padding: 0.4rem; }
+  </style>
+</head>
+<body>
+  <section class="hero">
+    <h1>doesntbreak</h1>
+    <p>Layouts that survive a phone.</p>
+    <a class="cta" href="#features">Get started</a>
+  </section>
+
+  <div class="container">
+    <!-- Rule 4 — unconstrained media: a wide image with no max-width overflows -->
+    <img src="https://placehold.co/2000x600" alt="Banner" width="2000">
+
+    <section id="features" class="row">
+      <article class="card">
+        <h3>Fast</h3>
+        <p>Drop it in and go. Docs: https://example.com/a-very-long-unbroken-url-that-overflows-the-row-on-mobile</p>
+        <button class="icon-btn">★</button>
+      </article>
+      <article class="card">
+        <h3>Fluid</h3>
+        <p>No breakpoints to babysit.</p>
+        <button class="icon-btn">★</button>
+      </article>
+      <article class="card">
+        <h3>Safe</h3>
+        <p>No surprise horizontal scroll.</p>
+        <button class="icon-btn">★</button>
+      </article>
+    </section>
+
+    <!-- Rule 9 — wide table with no scroll wrapper: the whole page scrolls sideways -->
+    <table border="1">
+      <thead>
+        <tr>
+          <th>Region</th><th>Q1</th><th>Q2</th><th>Q3</th><th>Q4</th>
+          <th>Target</th><th>Variance</th><th>Owner</th><th>Status</th><th>Notes</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>North</td><td>120</td><td>140</td><td>160</td><td>180</td>
+          <td>600</td><td>+0</td><td>Alice</td><td>On track</td><td>—</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <form>
+      <input class="field" type="email" placeholder="you@example.com">
+    </form>
+  </div>
+</body>
+</html>

@@ -44,6 +44,9 @@ doesntbreak/
 │       ├── SKILL.md      # the skill instructions Claude loads
 │       └── references/
 │           └── patterns.md  # detailed CSS mechanics + annotated example
+├── examples/
+│   ├── broken.html       # demo page seeded with all 9 rule violations
+│   └── fixed.html        # same content, each rule corrected
 ├── README.md             # this file
 ├── LICENSE               # MIT
 ├── CODE_OF_CONDUCT.md
@@ -90,6 +93,29 @@ You don't have to invoke it manually. Just ask Claude to build or fix any web UI
 - "This page breaks on my phone — fix it."
 
 Claude triggers the skill whenever it writes or reviews layout code, even if you never say the word "responsive." To run it deliberately, type the command from your install method above — `/doesntbreak` for a plain skill, `/doesntbreak:doesntbreak` for the plugin — and you can pass context after it, e.g. `/doesntbreak audit my dashboard layout`.
+
+## Examples
+
+`examples/` holds a deliberately broken page and its corrected twin, so you can
+watch the audit fire and compare before/after.
+
+Audit the broken page — expect Critical findings (fixed 1200px width, `100vh`
+hero, unwrapped flex row, uncontained wide table, sub-44px tap target), plus the
+unconstrained image and sub-16px input:
+
+```
+/doesntbreak:audit examples/broken.html
+```
+
+Audit the corrected page — expect a clean sweep:
+
+```
+/doesntbreak:audit examples/fixed.html
+```
+
+Both pages render the same content (hero, feature cards, data table). Open them
+in your browser's device toolbar at 320 / 375 / 768px: `broken.html` scrolls
+sideways while `fixed.html` reflows.
 
 ## License
 
