@@ -46,6 +46,7 @@ doesntbreak/
 │           └── patterns.md  # detailed CSS mechanics + annotated example
 ├── commands/
 │   ├── audit.md          # /doesntbreak:audit, report-only responsive audit
+│   ├── fix.md            # /doesntbreak:fix, apply the fixes, leave them for review
 │   └── screenshot-check.md  # /doesntbreak:screenshot-check, measured browser overflow check
 ├── examples/
 │   ├── broken.html       # demo page seeded with all 9 rule violations
@@ -131,6 +132,18 @@ offending element, and saves a screenshot per width:
 
 `screenshot-check` also takes a live URL (`http://localhost:3000`) for checking a
 running app. It needs a Playwright MCP browser, or Node with `npx playwright`.
+
+To apply the fixes instead of just reporting them, run `fix`. It edits the source
+for the high-confidence rules, flags the judgment calls (such as flex-wrap versus an
+auto-fit grid), verifies the result in the browser, and leaves the changes unstaged
+for you to review with `git diff`. It never commits:
+
+```
+/doesntbreak:fix examples/broken.html
+```
+
+The three commands form a loop: `audit` reports, `fix` applies, `screenshot-check`
+proves.
 
 ## License
 
