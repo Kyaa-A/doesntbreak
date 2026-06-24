@@ -1,0 +1,7 @@
+# Playwright MCP scratch and screenshot-check artifacts
+.playwright-mcp/
+shot-*.png
+*-320.png
+*-375.png
+*-768.png
+*-1440.png

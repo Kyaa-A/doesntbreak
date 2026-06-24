@@ -77,9 +77,10 @@ Same shape, keyed to the offending utility.
 
 ### Verification Suggestions
 Concrete next checks: the breakpoints to test (320 / 375 / 768 / 1440px) and the
-`* { outline: 1px solid red; }` overflow hunt. A dedicated `/doesntbreak:screenshot-check`
-command (load each width and assert no horizontal scroll) is planned but not yet
-available. Until it exists, verify manually in the browser's device toolbar.
+`* { outline: 1px solid red; }` overflow hunt. To confirm these findings in a real
+browser, run `/doesntbreak:screenshot-check <same target>`: it loads each width and
+reports measured horizontal overflow with the offending element. You can also verify
+manually in the browser's device toolbar.
 
 ### Clean Areas / No Findings
 Note rules that passed and files that looked solid, so the report reads as a full

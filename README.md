@@ -44,6 +44,9 @@ doesntbreak/
 │       ├── SKILL.md      # the skill instructions Claude loads
 │       └── references/
 │           └── patterns.md  # detailed CSS mechanics + annotated example
+├── commands/
+│   ├── audit.md          # /doesntbreak:audit, report-only responsive audit
+│   └── screenshot-check.md  # /doesntbreak:screenshot-check, measured browser overflow check
 ├── examples/
 │   ├── broken.html       # demo page seeded with all 9 rule violations
 │   └── fixed.html        # same content, each rule corrected
@@ -116,6 +119,18 @@ Audit the corrected page: expect a clean sweep:
 Both pages render the same content (hero, feature cards, data table). Open them
 in your browser's device toolbar at 320 / 375 / 768px: `broken.html` scrolls
 sideways while `fixed.html` reflows.
+
+To prove it in a real headless browser instead of by eye, run the measured check.
+It loads the page at 320 / 375 / 768 / 1440px, reports horizontal overflow with the
+offending element, and saves a screenshot per width:
+
+```
+/doesntbreak:screenshot-check examples/broken.html
+/doesntbreak:screenshot-check examples/fixed.html
+```
+
+`screenshot-check` also takes a live URL (`http://localhost:3000`) for checking a
+running app. It needs a Playwright MCP browser, or Node with `npx playwright`.
 
 ## License
 
